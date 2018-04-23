@@ -53,7 +53,8 @@ public class FireWallVpnService extends VpnService {
                                 e.printStackTrace();
                             }
                         } else {
-                            Log.d(TAG, "run: length = " + length);
+                            Packet packet = new Packet(buff, length);
+                            Log.d(TAG, "run: packet = " + packet);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
