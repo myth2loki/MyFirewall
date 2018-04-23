@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.qianyu.firewall.BuildConfig;
 import com.qianyu.firewall.R;
+import com.qianyu.firewall.vpn.tcpip.CommonMethods;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -54,7 +55,21 @@ public class FireWallVpnService extends VpnService {
                             }
                         } else {
                             Packet packet = new Packet(buff, length);
-                            Log.d(TAG, "run: packet = " + packet);
+
+                            if (packet.isTcp()) {
+                                Log.d(TAG, "run: tcp = " + packet);
+
+                            } else if (packet.isUdp()) {
+                                if (packet.getIPHeader().getSourceIP() == CommonMethods.ipStringToInt(VPN_ADDRESS)
+                                        && packet.getUdpHeader().getDestinationPort() == 53) {
+                                    //这是dns packet
+                                    Log.d(TAG, "run: dns request == " +
+                                            CommonMethods.ipIntToString(packet.getIPHeader().getDestinationIP())
+                                            + ":" + packet.getUdpHeader().getDestinationPort());
+                                }
+                            } else if (packet.isIcmp()) {
+
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

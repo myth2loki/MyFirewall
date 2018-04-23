@@ -25,12 +25,28 @@ public class Packet {
         }
     }
 
+    public IPHeader getIPHeader() {
+        return mIPHeader;
+    }
+
+    public TCPHeader getTcpHeader() {
+        return mTcpHeader;
+    }
+
+    public UDPHeader getUdpHeader() {
+        return mUdpHeader;
+    }
+
     public boolean isTcp() {
         return mIPHeader.getProtocol() == IPHeader.TCP;
     }
 
     public boolean isUdp() {
         return mIPHeader.getProtocol() == IPHeader.UDP;
+    }
+
+    public boolean isIcmp() {
+        return mIPHeader.getProtocol() == IPHeader.ICMP;
     }
 
     @Override
